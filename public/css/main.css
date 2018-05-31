@@ -1,0 +1,16 @@
+/*main.less*/
+.bg {
+  width: 100%;
+  height: 300px;
+  background: url(images/d6d890c9.bg.jpg) no-repeat;
+}
+.greet {
+  width: 100%;
+  height: 200px;
+  background: #de3de3;
+}
+.blue {
+  width: 100%;
+  height: 200px;
+  background: skyblue;
+}

@@ -1,38 +1,57 @@
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const path = require("path");
+
 module.exports = {
     devtool: 'eval-source-map',
-    entry:  __dirname + "/app/main.js",//已多次提及的唯一入口文件
+    entry: {
+        bundle : __dirname + "/app/main.js",    //打包出bundle.js
+        // search: __dirname + "/app/js/search.js"
+
+    },
     output: {
-         path: __dirname + "/public/js",//打包后的文件存放的地方
-        filename: "bundle.js"//打包后输出文件的文件名
+        path: __dirname + "/public",//打包后的文件存放的地方
+        filename: "./js/[name].js"//打包后输出文件的文件名"[name].js"
     },
     mode: 'development',
     devServer: {
-        contentBase: "./public",
-        historyApiFallback: true,
-        inline: true
+        contentBase: "./public", //本地服务器所加载的页面所在的目录
+        historyApiFallback: true,   //出错的内容
+        //hot: true,                  //热模块更新作用
+        port: 3000                  //开启端口
     },
     module: {
         rules: [
-            {
-                test: /\.js$/,
-                exclude: /(node_modules|bower_components)/,
-                loader: 'babel-loader',
-                query: { presets: ["es2015"] }
+        {
+            test: /(\.jsx|\.js)$/,
+            use: {
+                loader: "babel-loader"
             },
-            {
-                test: /\.(less|css)$/,
-                use: [
-                    {
-                        loader: "style-loader"
-                    }, {
-                        loader: "css-loader",
-                        options: {
-                            modules: true, // 指定启用css modules
-                            localIdentName: '[name]__[local]--[hash:base64:5]' // 指定css的类名格式
-                        }
-                    }
-                ]
-            },
+            exclude: /node_modules/,
+        },
+        {
+            test: /\.(less|css)$/,
+            use: ExtractTextPlugin.extract({
+              use:[ 'css-loader','less-loader'],
+              fallback: 'style-loader',
+            }),                             //分离css
+        },
+        { test: /\.(gif|jpg|png|woff|svg|eot|ttf)\??.*$/, loader: 'url-loader?limit=8192&name=images/[hash:8].[name].[ext]'},
+            { test: /\.png$/, loader: "file-loader?name=images/[hash:8].[name].[ext]" }
         ]
     },
-}
+    plugins: [
+        new ExtractTextPlugin({
+            filename:  (getPath) => {
+              return getPath('./css/main.css').replace('css/js', 'css');
+            },
+            disable: false,
+            allChunks: true
+        }),
+        // new ExtractTextPlugin({
+        //     filename: 'main.css',
+        //     disable: false,
+        //     allChunks: true,
+        //     publicPath: __dirname + "./public/css",
+        //   }),
+    ]
+};
