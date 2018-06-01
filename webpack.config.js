@@ -6,7 +6,6 @@ module.exports = {
     entry: {
         bundle : __dirname + "/app/main.js",    //打包出bundle.js
         // search: __dirname + "/app/js/search.js"
-
     },
     output: {
         path: __dirname + "/public",//打包后的文件存放的地方
@@ -33,10 +32,10 @@ module.exports = {
             use: ExtractTextPlugin.extract({
               use:[ 'css-loader','less-loader'],
               fallback: 'style-loader',
-            }),                             //分离css
+        }),                             //分离css
         },
-        { test: /\.(gif|jpg|png|woff|svg|eot|ttf)\??.*$/, loader: 'url-loader?limit=8192&name=images/[hash:8].[name].[ext]'},
-            { test: /\.png$/, loader: "file-loader?name=images/[hash:8].[name].[ext]" }
+        { test: /\.(gif|jpg|png|woff|svg|eot|ttf)\??.*$/, loader: 'url-loader?limit=8192&name=../images/[hash:8].[name].[ext]'},
+        { test: /\.png$/, loader: "file-loader?name=./images/[hash:8].[name].[ext]" }
         ]
     },
     plugins: [
@@ -47,11 +46,5 @@ module.exports = {
             disable: false,
             allChunks: true
         }),
-        // new ExtractTextPlugin({
-        //     filename: 'main.css',
-        //     disable: false,
-        //     allChunks: true,
-        //     publicPath: __dirname + "./public/css",
-        //   }),
     ]
 };

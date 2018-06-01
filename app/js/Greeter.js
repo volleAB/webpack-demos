@@ -21,7 +21,7 @@ class Greet {
     var bg = document.getElementsByClassName("header")[0];
     for(let i = 0; i < 4; i++) {
       var oDiv = document.createElement('div');
-      oDiv.classList.add('');
+      oDiv.classList.add('yellow');
       con.append(oDiv);
     }
     bg.classList.add('bg');
